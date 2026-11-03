@@ -1,0 +1,559 @@
+<html data-type="html" data-identifier="20ec87cf-25ad-43a2-a603-5e0e8eef81eb" data-title="BVLGARI Paid Performance Center" data-version="3" width="1440" height="960"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BVLGARI | Paid Performance Center</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Calibri','Microsoft YaHei',sans-serif;background:#EBEBEB;color:#333;}
+
+/* ══════════════ LOGIN — WHITE LUXURY ══════════════ */
+#loginPage{
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    background:#FAFAF8;
+    display:flex;align-items:center;justify-content:center;
+    z-index:9999;transition:opacity .6s;
+}
+/* Subtle geometric gold grid background */
+#loginPage::before{
+    content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+    background-image:
+        linear-gradient(rgba(184,150,46,.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(184,150,46,.07) 1px, transparent 1px);
+    background-size:60px 60px;
+    pointer-events:none;
+}
+/* Warm radial glow in centre */
+#loginPage::after{
+    content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:700px;height:700px;border-radius:50%;
+    background:radial-gradient(circle, rgba(184,150,46,.07) 0%, transparent 70%);
+    pointer-events:none;
+}
+.login-bg{
+    position:absolute;font-size:200px;font-weight:900;
+    color:rgba(184,150,46,.045);letter-spacing:20px;
+    user-select:none;top:50%;left:50%;transform:translate(-50%,-50%);
+    white-space:nowrap;pointer-events:none;
+    font-family:'Times New Roman',serif;
+}
+.login-card{
+    position:relative;z-index:1;
+    background:#FFFFFF;
+    border:1px solid rgba(184,150,46,.35);
+    border-top:3px solid #B8962E;
+    border-radius:12px;
+    padding:52px 64px;text-align:center;width:450px;
+    box-shadow:0 8px 48px rgba(0,0,0,.10), 0 2px 8px rgba(184,150,46,.08);
+}
+/* top gold accent corners */
+.login-card::before,.login-card::after{
+    content:'';position:absolute;width:16px;height:16px;
+    border-color:#B8962E;border-style:solid;
+}
+.login-card::before{top:-1px;left:-1px;border-width:2px 0 0 2px;border-radius:12px 0 0 0;}
+.login-card::after{top:-1px;right:-1px;border-width:2px 2px 0 0;border-radius:0 12px 0 0;}
+
+.login-logo{
+    font-family:'Times New Roman',serif;letter-spacing:9px;
+    font-size:28px;color:#B8962E;font-weight:normal;margin-bottom:6px;
+}
+.login-sub{
+    color:#AAA;font-size:10px;letter-spacing:3px;margin-bottom:8px;
+    text-transform:uppercase;
+}
+.login-line{width:40px;height:1px;background:linear-gradient(90deg,transparent,#B8962E,transparent);margin:0 auto 28px;}
+.l-inp{
+    width:100%;background:#F8F8F6;border:1px solid #E8E8E4;
+    color:#222;padding:13px 18px;border-radius:6px;font-size:14px;
+    outline:none;transition:.3s;margin-bottom:13px;font-family:inherit;
+}
+.l-inp:focus{border-color:#B8962E;background:#FFFDF5;box-shadow:0 0 0 3px rgba(184,150,46,.08);}
+.l-inp::placeholder{color:#BBBBBB;}
+.l-err{color:#C0392B;font-size:12px;min-height:18px;margin-bottom:8px;}
+.l-btn{
+    width:100%;background:linear-gradient(135deg,#B8962E,#D4AF37);
+    color:#FFF;border:none;padding:14px;border-radius:6px;
+    font-size:13px;font-weight:bold;letter-spacing:3px;cursor:pointer;
+    transition:.3s;font-family:inherit;
+    box-shadow:0 4px 16px rgba(184,150,46,.3);
+}
+.l-btn:hover{background:linear-gradient(135deg,#C9A533,#B8962E);transform:translateY(-1px);box-shadow:0 8px 24px rgba(184,150,46,.4);}
+.l-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none;}
+.l-foot{
+    color:#BBBBBB;font-size:10px;letter-spacing:1.5px;margin-top:28px;
+    font-style:italic;
+}
+
+/* ══════════════ APP ══════════════ */
+#appPage{display:none;background:#EBEBEB;min-height:100vh;}
+.app-hdr{background:linear-gradient(90deg,#111,#1e1e1e);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:54px;border-bottom:2px solid #B8962E;position:sticky;top:0;z-index:200;}
+.hdr-brand{font-family:'Times New Roman',serif;letter-spacing:6px;color:#B8962E;font-size:17px;}
+.hdr-title{color:rgba(255,255,255,.38);font-size:10px;letter-spacing:2px;margin-left:14px;}
+.hdr-nav{display:flex;align-items:center;gap:10px;}
+.hdr-user{color:rgba(255,255,255,.38);font-size:11px;margin-right:6px;}
+.hdr-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.65);padding:5px 13px;border-radius:4px;font-size:12px;cursor:pointer;transition:.2s;font-family:inherit;}
+.hdr-btn:hover{border-color:#B8962E;color:#B8962E;}
+.hdr-btn-out{border-color:rgba(255,100,100,.25);color:rgba(255,130,130,.7);}
+.hdr-btn-out:hover{border-color:#ff6b6b;color:#ff6b6b;}
+.wrap{padding:18px 28px;max-width:1600px;margin:0 auto;}
+.card{background:#FFF;border-radius:10px;border:1px solid #E2E2E2;box-shadow:0 2px 10px rgba(0,0,0,.05);margin-bottom:18px;overflow:hidden;}
+.sec-hdr{padding:13px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #F2F2F2;}
+.sec-title{font-size:14px;font-weight:bold;color:#1A1A1A;display:flex;align-items:center;gap:8px;}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;letter-spacing:.5px;}
+.tag-gold{background:#FFF3E0;color:#B8962E;border:1px solid #F4E8C1;}
+.tag-blue{background:#E3F2FD;color:#1565C0;border:1px solid #BBDEFB;}
+.tag-purple{background:#F3E5F5;color:#6A1B9A;border:1px solid #CE93D8;}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+.dot-g{background:#CCC;}.dot-green{background:#2E7D32;}.dot-blue{background:#1565C0;}.dot-purple{background:#6A1B9A;}
+.ai-body{padding:14px 20px;}
+.ai-hint{color:#AAA;font-size:12px;font-style:italic;line-height:1.7;}
+.ai-btn{background:linear-gradient(135deg,#111,#1e1e1e);color:#B8962E;border:1px solid #B8962E;padding:7px 18px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:bold;font-family:inherit;transition:.3s;display:inline-flex;align-items:center;gap:7px;}
+.ai-btn:hover{background:#B8962E;color:#FFF;}
+.ai-btn:disabled{opacity:.45;cursor:not-allowed;}
+.ai-out{background:#F8FAF8;border:1px solid #E2EAE2;border-radius:8px;padding:16px;font-size:13px;line-height:1.85;color:#333;margin-top:12px;white-space:pre-wrap;display:none;}
+.ai-out.show{display:block;}
+.ai-pulse{display:inline-flex;align-items:center;gap:6px;color:#888;font-size:13px;}
+.ai-d{width:7px;height:7px;background:#B8962E;border-radius:50%;animation:dp 1.4s infinite;}
+.ai-d:nth-child(2){animation-delay:.2s;}.ai-d:nth-child(3){animation-delay:.4s;}
+@keyframes dp{0%,80%,100%{transform:scale(.5);opacity:.3;}40%{transform:scale(1);opacity:1;}}
+.fbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:10px 20px;background:#FAFAFA;border-bottom:1px solid #F0F0F0;}
+.fl{font-size:11px;color:#888;font-weight:bold;white-space:nowrap;}
+.fsel{background:#FFF;border:1px solid #DDD;color:#333;padding:5px 8px;border-radius:4px;font-size:12px;outline:none;cursor:pointer;font-family:inherit;}
+.fsel:focus{border-color:#B8962E;}
+.ch-btn{padding:4px 13px;border-radius:16px;font-size:11px;cursor:pointer;border:1px solid #DDD;background:#FFF;color:#666;font-family:inherit;transition:.2s;font-weight:bold;}
+.ch-btn.a-all{background:#1A1A1A;color:#B8962E;border-color:#1A1A1A;}
+.ch-btn.a-ocpx{background:#1565C0;color:#FFF;border-color:#1565C0;}
+.ch-btn.a-ppc{background:#6A1B9A;color:#FFF;border-color:#6A1B9A;}
+.kpi-row{display:flex;gap:13px;padding:14px 18px;}
+.kpi{flex:1;padding:14px 16px;background:#FFF;border-radius:8px;border:1px solid #EAEAEA;border-top:3px solid #B8962E;}
+.kpi.b{border-top-color:#1565C0;}.kpi.p{border-top-color:#6A1B9A;}
+.kpi-lbl{font-size:11px;color:#999;font-weight:bold;margin-bottom:5px;letter-spacing:.3px;}
+.kpi-val{font-size:24px;font-weight:bold;color:#1A1A1A;line-height:1.2;}
+.kpi-sub{font-size:11px;color:#BBB;margin-top:3px;}
+.chart-row{display:flex;gap:14px;padding:0 18px 18px;}
+.chart-box{background:#FAFAFA;border-radius:8px;border:1px solid #EAEAEA;padding:12px 14px;}
+.chart-ttl{font-size:11px;color:#888;font-weight:bold;margin-bottom:8px;}
+.tbl-wrap{overflow-x:auto;padding:0 18px 18px;}
+table.dt{width:100%;border-collapse:collapse;font-size:12px;}
+table.dt th{background:#F6F6F6;color:#555;padding:8px 11px;text-align:right;border-bottom:2px solid #E0E0E0;font-weight:bold;white-space:nowrap;}
+table.dt th:first-child{text-align:left;}
+table.dt td{padding:7px 11px;border-bottom:1px solid #F2F2F2;text-align:right;color:#333;}
+table.dt td:first-child{text-align:left;font-weight:bold;}
+table.dt tr:hover td{background:#FFFAF0;}
+table.dt tr.tr-tot td{background:#FDF9E6;font-weight:bold;color:#B8962E;border-top:2px solid #B8962E;}
+.bdg{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;}
+.bdg-o{background:#E3F2FD;color:#1565C0;}.bdg-p{background:#F3E5F5;color:#6A1B9A;}
+.no-data{text-align:center;padding:28px;color:#BBB;font-size:12px;}
+.ch-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+.up-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:5px;font-size:12px;cursor:pointer;font-family:inherit;font-weight:bold;transition:.2s;border:1.5px solid;}
+.up-o{border-color:#1565C0;color:#1565C0;background:#FFF;}
+.up-o:hover{background:#E3F2FD;}
+.up-p{border-color:#6A1B9A;color:#6A1B9A;background:#FFF;}
+.up-p:hover{background:#F3E5F5;}
+.dim-bar{padding:0 18px 8px;display:flex;align-items:center;gap:8px;}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.55);z-index:9500;align-items:center;justify-content:center;}
+.modal.show{display:flex;}
+.modal-box{background:#FFF;border-radius:10px;padding:28px 32px;width:480px;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.modal-ttl{font-size:15px;font-weight:bold;margin-bottom:6px;}
+.modal-desc{font-size:12px;color:#888;margin-bottom:18px;line-height:1.7;}
+.modal-inp{width:100%;border:1px solid #DDD;border-radius:5px;padding:10px 12px;font-size:13px;outline:none;font-family:monospace;margin-bottom:12px;}
+.modal-inp:focus{border-color:#B8962E;}
+.modal-warn{font-size:11px;color:#AAA;margin-bottom:16px;line-height:1.6;}
+.modal-acts{display:flex;gap:10px;justify-content:flex-end;}
+.mbtn{padding:8px 20px;border-radius:5px;font-size:13px;cursor:pointer;font-family:inherit;}
+.mbtn-c{background:#FFF;border:1px solid #DDD;color:#666;}
+.mbtn-s{background:#1A1A1A;color:#B8962E;border:none;font-weight:bold;}
+.mbtn-s:hover{background:#B8962E;color:#FFF;}
+</style>
+</head>
+<body>
+
+<!-- ════════════ LOGIN ════════════ -->
+<div id="loginPage">
+    <div class="login-bg">BVLGARI</div>
+    <div class="login-card">
+        <div class="login-logo">B V L G A R I</div>
+        <div class="login-sub">Paid Performance Center</div>
+        <div class="login-line"></div>
+        <input type="text" class="l-inp" id="lUser" placeholder="账号 / Username" autocomplete="username">
+        <input type="password" class="l-inp" id="lPass" placeholder="密码 / Password" autocomplete="current-password">
+        <div class="l-err" id="lErr"></div>
+        <button class="l-btn" id="lBtn">登 录</button>
+        <!-- ✅ 已更新版权归属文字 -->
+        <div class="l-foot">System AIchitecture &amp; Design by Gina Xu</div>
+    </div>
+</div>
+
+<!-- ════════════ APP ════════════ -->
+<div id="appPage">
+    <div class="app-hdr">
+        <div style="display:flex;align-items:center;">
+            <span class="hdr-brand">B V L G A R I</span>
+            <span class="hdr-title">PAID PERFORMANCE CENTER</span>
+        </div>
+        <div class="hdr-nav">
+            <span class="hdr-user" id="hdrUser"></span>
+            <button class="hdr-btn" id="btnAISetting">⚙️ AI 设置</button>
+            <button class="hdr-btn hdr-btn-out" id="btnLogout">退出登录</button>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="card" id="aiCard">
+            <div class="sec-hdr" style="cursor:pointer;" id="aiHdr">
+                <div class="sec-title">
+                    🤖 AI 智能洞察
+                    <span class="tag tag-gold">GPT-4o</span>
+                    <span class="dot dot-g" id="aiDot" style="margin-left:6px;"></span>
+                    <span id="aiSt" style="font-size:11px;color:#AAA;font-weight:normal;">未配置 API Key</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <button class="ai-btn" id="btnAnalyze" disabled="">✨ 生成分析报告</button>
+                    <span id="aiArrow" style="color:#AAA;font-size:12px;transition:.3s;">▼</span>
+                </div>
+            </div>
+            <div id="aiBody" class="ai-body">
+                <div class="ai-hint" id="aiHint">请先点击右上角 "⚙️ AI 设置" 配置 OpenAI API Key，然后上传数据后点击 "生成分析报告"。AI 将根据当前大盘所有渠道数据自动生成中文绩效洞察与优化建议。</div>
+                <div class="ai-out" id="aiOut"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="sec-hdr">
+                <div class="sec-title">📊 综合大盘 <span class="tag tag-gold">Overall</span></div>
+                <span style="font-size:11px;color:#AAA;">上传 OCPX / PPC 数据后自动汇总</span>
+            </div>
+            <div class="fbar">
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <span class="fl">📅 年份:</span>
+                    <select class="fsel" id="fYear"><option value="ALL">全部年份</option></select>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <span class="fl">月份:</span>
+                    <select class="fsel" id="fMonth">
+                        <option value="ALL">全部月份</option>
+                        <option value="1">1月</option><option value="2">2月</option><option value="3">3月</option>
+                        <option value="4">4月</option><option value="5">5月</option><option value="6">6月</option>
+                        <option value="7">7月</option><option value="8">8月</option><option value="9">9月</option>
+                        <option value="10">10月</option><option value="11">11月</option><option value="12">12月</option>
+                    </select>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <span class="fl">趋势粒度:</span>
+                    <select class="fsel" id="fGran">
+                        <option value="month">按月</option>
+                        <option value="day">按日</option>
+                        <option value="year">按年</option>
+                    </select>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;margin-left:12px;">
+                    <span class="fl">渠道:</span>
+                    <button class="ch-btn a-all" data-ch="ALL">全渠道</button>
+                    <button class="ch-btn" data-ch="OCPX">OCPX</button>
+                    <button class="ch-btn" data-ch="PPC">PPC</button>
+                </div>
+            </div>
+            <div class="kpi-row">
+                <div class="kpi"><div class="kpi-lbl">总花费 (Media Cost)</div><div class="kpi-val" id="ovC">—</div></div>
+                <div class="kpi"><div class="kpi-lbl">总付费金额 (GMV)</div><div class="kpi-val" id="ovG">—</div></div>
+                <div class="kpi"><div class="kpi-lbl">整体 ROI</div><div class="kpi-val" id="ovR">—</div></div>
+                <div class="kpi"><div class="kpi-lbl">总曝光量</div><div class="kpi-val" id="ovI">—</div></div>
+                <div class="kpi"><div class="kpi-lbl">总点击 / CTR</div><div class="kpi-val" id="ovCl">—</div><div class="kpi-sub" id="ovCTR"></div></div>
+                <div class="kpi"><div class="kpi-lbl">总付费次数 / CPP</div><div class="kpi-val" id="ovPC">—</div><div class="kpi-sub" id="ovCPP"></div></div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-box" style="width:270px;flex-shrink:0;">
+                    <div class="chart-ttl">💰 花费渠道分布</div>
+                    <div id="cPieSpend" style="height:210px;"></div>
+                </div>
+                <div class="chart-box" style="width:270px;flex-shrink:0;">
+                    <div class="chart-ttl">🛍️ GMV 渠道分布</div>
+                    <div id="cPieGMV" style="height:210px;"></div>
+                </div>
+                <div class="chart-box" style="flex:1;">
+                    <div class="chart-ttl">📈 花费 &amp; GMV 趋势（堆叠柱 + 折线）</div>
+                    <div id="cTrend" style="height:210px;"></div>
+                </div>
+            </div>
+            <div class="tbl-wrap">
+                <table class="dt">
+                    <thead><tr>
+                        <th>渠道</th><th>花费 (¥)</th><th>花费占比</th>
+                        <th>曝光量</th><th>点击量</th><th>CTR</th>
+                        <th>付费次数</th><th>付费金额 (¥)</th><th>ROI</th><th>CPP (¥)</th>
+                    </tr></thead>
+                    <tbody id="ovTbody"><tr><td colspan="10" class="no-data">请上传 OCPX 或 PPC 数据后查看</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="ch-grid">
+            <div class="card">
+                <div class="sec-hdr">
+                    <div class="sec-title">
+                        <span style="color:#1565C0;font-size:16px;">📱</span> OCPX
+                        <span class="tag tag-blue">微信 · 腾讯</span>
+                        <span class="dot dot-g" id="oDot" style="margin-left:4px;"></span>
+                        <span id="oSt" style="font-size:11px;color:#AAA;font-weight:normal;">未上传</span>
+                    </div>
+                    <label class="up-btn up-o">📁 上传数据<input type="file" id="ocpxFile" accept=".xlsx,.xls,.csv" style="display:none"></label>
+                </div>
+                <div class="kpi-row" style="padding:10px 14px;">
+                    <div class="kpi b" style="padding:10px 13px;"><div class="kpi-lbl">花费</div><div class="kpi-val" id="oC" style="font-size:20px;">—</div></div>
+                    <div class="kpi b" style="padding:10px 13px;"><div class="kpi-lbl">付费金额</div><div class="kpi-val" id="oG" style="font-size:20px;">—</div></div>
+                    <div class="kpi b" style="padding:10px 13px;"><div class="kpi-lbl">ROI</div><div class="kpi-val" id="oR" style="font-size:20px;">—</div></div>
+                    <div class="kpi b" style="padding:10px 13px;"><div class="kpi-lbl">CTR</div><div class="kpi-val" id="oCTR" style="font-size:20px;">—</div></div>
+                </div>
+                <div class="dim-bar">
+                    <span style="font-size:11px;color:#888;font-weight:bold;">分析维度:</span>
+                    <select class="fsel" id="oDim">
+                        <option value="campaign">活动系列</option><option value="placement">媒体点位</option>
+                        <option value="audience">人群定向</option><option value="series">产品系列</option><option value="format">素材形式</option>
+                    </select>
+                </div>
+                <div style="padding:0 16px 8px;"><div id="cOBar" style="height:150px;"></div></div>
+                <div class="tbl-wrap" style="max-height:280px;overflow-y:auto;">
+                    <table class="dt"><thead><tr><th>维度值</th><th>花费</th><th>占比</th><th>GMV</th><th>ROI</th><th>点击</th><th>CTR</th><th>CPP</th></tr></thead>
+                    <tbody id="oTbody"><tr><td colspan="8" class="no-data">请上传 OCPX 数据</td></tr></tbody></table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="sec-hdr">
+                    <div class="sec-title">
+                        <span style="color:#6A1B9A;font-size:16px;">💻</span> PPC
+                        <span class="tag tag-purple">竞价广告</span>
+                        <span class="dot dot-g" id="pDot" style="margin-left:4px;"></span>
+                        <span id="pSt" style="font-size:11px;color:#AAA;font-weight:normal;">未上传</span>
+                    </div>
+                    <label class="up-btn up-p">📁 上传数据<input type="file" id="ppcFile" accept=".xlsx,.xls,.csv" style="display:none"></label>
+                </div>
+                <div class="kpi-row" style="padding:10px 14px;">
+                    <div class="kpi p" style="padding:10px 13px;"><div class="kpi-lbl">花费</div><div class="kpi-val" id="pC" style="font-size:20px;">—</div></div>
+                    <div class="kpi p" style="padding:10px 13px;"><div class="kpi-lbl">付费金额</div><div class="kpi-val" id="pG" style="font-size:20px;">—</div></div>
+                    <div class="kpi p" style="padding:10px 13px;"><div class="kpi-lbl">ROI</div><div class="kpi-val" id="pR" style="font-size:20px;">—</div></div>
+                    <div class="kpi p" style="padding:10px 13px;"><div class="kpi-lbl">CTR</div><div class="kpi-val" id="pCTR" style="font-size:20px;">—</div></div>
+                </div>
+                <div class="dim-bar">
+                    <span style="font-size:11px;color:#888;font-weight:bold;">分析维度:</span>
+                    <select class="fsel" id="pDim">
+                        <option value="campaign">活动系列</option><option value="placement">媒体点位</option>
+                        <option value="audience">人群定向</option><option value="series">产品系列</option><option value="format">素材形式</option>
+                    </select>
+                </div>
+                <div style="padding:0 16px 8px;"><div id="cPBar" style="height:150px;"></div></div>
+                <div class="tbl-wrap" style="max-height:280px;overflow-y:auto;">
+                    <table class="dt"><thead><tr><th>维度值</th><th>花费</th><th>占比</th><th>GMV</th><th>ROI</th><th>点击</th><th>CTR</th><th>CPP</th></tr></thead>
+                    <tbody id="pTbody"><tr><td colspan="8" class="no-data">请上传 PPC 数据</td></tr></tbody></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="aiModal">
+    <div class="modal-box">
+        <div class="modal-ttl">🔑 AI 分析配置</div>
+        <div class="modal-desc">请输入您的 OpenAI API Key（以 <code>sk-</code> 开头）。Key 仅存储于当前浏览器会话，关闭页面后自动清除。</div>
+        <input type="password" class="modal-inp" id="aiKeyInp" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxx">
+        <div class="modal-warn">⚠️ 模型：GPT-4o。每次分析约消耗 1,000–2,000 tokens，费用由您的 OpenAI 账户承担。</div>
+        <div class="modal-acts">
+            <button class="mbtn mbtn-c" id="aiMCancel">取消</button>
+            <button class="mbtn mbtn-s" id="aiMSave">保存并激活</button>
+        </div>
+    </div>
+</div>
+
+<script>
+'use strict';
+const ACCOUNTS = { 'gina': '6666' };
+
+let ocpxProc=null,ppcProc=null,activeCh='ALL',aiKey='',aiCollapsed=false;
+const $=id=>document.getElementById(id);
+const safeDiv=(a,b)=>b?a/b:0;
+const fC=v=>'¥'+Math.round(v).toLocaleString('zh-CN');
+const fN=v=>Math.round(v).toLocaleString('zh-CN');
+const fP=v=>(v*100).toFixed(2)+'%';
+const fF=v=>Number(v).toFixed(2);
+
+function parseDate(s){
+    if(!s)return new Date(NaN);s=String(s).trim();
+    let d=new Date(s);if(!isNaN(d.getTime()))return d;
+    let m=s.match(/(\d{4})年(\d{1,2})月(\d{1,2})/);if(m)return new Date(+m[1],+m[2]-1,+m[3]);
+    m=s.match(/^(\d{4})(\d{2})(\d{2})$/);if(m)return new Date(+m[1],+m[2]-1,+m[3]);
+    m=s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);if(m)return new Date(+m[3],+m[1]-1,+m[2]);
+    return new Date(NaN);
+}
+function getCI(h,ns){for(const n of ns){const i=h.findIndex(x=>x.trim()===n);if(i!==-1)return i;}return -1;}
+function buildIdx(h){return{
+    date:getCI(h,['日期-ADQ','日期','Date']),
+    placement:getCI(h,['点位-ADQ','点位','版位','效果点位','渠道','媒体']),
+    campaign:getCI(h,['活动系列-ADQ','活动系列','Campaign','计划名称','广告计划']),
+    series:getCI(h,['素材产品系列名','产品系列','系列','品类']),
+    audience:getCI(h,['人群','人群-ADQ','定向','受众']),
+    format:getCI(h,['素材形式','素材形式-ADQ','创意形式','广告形式']),
+    cost:getCI(h,['花费','消耗','Cost','Spend','费用']),
+    imp:getCI(h,['曝光量','曝光','Impressions','展示量']),
+    click:getCI(h,['点击量','点击','Clicks','点击数']),
+    uv:getCI(h,['点击人数','UV','独立点击']),
+    paidCnt:getCI(h,['付费次数','转化次数','转化量','成交次数']),
+    paidAmt:getCI(h,['付费金额','转化金额','GMV','成交金额','转化价值']),
+    cartCnt:getCI(h,['加入购物车次数','加入购物车','加购次数']),
+    orderCnt:getCI(h,['下单次数','下单量']),
+    orderAmt:getCI(h,['下单金额'])
+};}
+function getN(r,i){if(i===-1||r[i]===undefined||r[i]===null||r[i]==='')return 0;return parseFloat(String(r[i]).replace(/,/g,''))||0;}
+
+function doLogin(){
+    const btn=$('lBtn'),user=$('lUser').value.trim().toLowerCase(),pass=$('lPass').value,err=$('lErr');
+    if(!user||!pass){err.textContent='请输入账号和密码';return;}
+    btn.disabled=true;btn.textContent='验证中...';
+    const valid=ACCOUNTS[user]===pass;
+    if(valid){
+        sessionStorage.setItem('bvl_u',user);
+        $('loginPage').style.opacity='0';
+        setTimeout(()=>{$('loginPage').style.display='none';$('appPage').style.display='block';},500);
+        $('hdrUser').textContent='👤 '+user;
+        const k=sessionStorage.getItem('bvl_k');if(k){aiKey=k;setAiStatus(true);}
+    }else{err.textContent='账号或密码错误，请重试';btn.disabled=false;btn.textContent='登 录';}
+}
+function checkSession(){
+    const u=sessionStorage.getItem('bvl_u');
+    if(u){$('loginPage').style.display='none';$('appPage').style.display='block';$('hdrUser').textContent='👤 '+u;}
+    const k=sessionStorage.getItem('bvl_k');if(k){aiKey=k;setAiStatus(true);}
+}
+function setAiStatus(on){
+    $('aiDot').className='dot '+(on?'dot-green':'dot-g');
+    $('aiSt').textContent=on?'API Key 已配置 ✓':'未配置 API Key';
+    $('btnAnalyze').disabled=!on;
+}
+function buildPrompt(){
+    const g=id=>$(id)?$(id).textContent:'—';
+    const rows=[];
+    ($('ovTbody')||{querySelectorAll:()=>[]}).querySelectorAll('tr:not(.tr-tot)').forEach(tr=>{rows.push(Array.from(tr.cells).map(c=>c.textContent.trim()).join(' | '));});
+    return `你是宝格丽（BVLGARI）中国市场高级付费广告绩效分析师，专注奢侈品数字营销。请根据以下实时看板数据，用中文撰写专业绩效分析报告：\n\n【大盘数据】\n总花费: ${g('ovC')} | 总GMV: ${g('ovG')} | 整体ROI: ${g('ovR')}\n总曝光: ${g('ovI')} | 总点击: ${g('ovCl')} | ${g('ovCTR')}\n总付费次数: ${g('ovPC')} | ${g('ovCPP')}\n\n【渠道明细】\n${rows.join('\n')||'暂无数据'}\n\n【OCPX】花费:${g('oC')} GMV:${g('oG')} ROI:${g('oR')} CTR:${g('oCTR')}\n【PPC】花费:${g('pC')} GMV:${g('pG')} ROI:${g('pR')} CTR:${g('pCTR')}\n\n请输出：\n1. 📊 整体表现摘要（2-3句）\n2. 🔍 渠道亮点与异常（OCPX vs PPC）\n3. ⚠️ 风险与机会（各2条）\n4. 💡 具体优化建议（3条可执行操作）\n5. 📈 下阶段重点关注指标\n\n语言：中文，用 emoji 分隔段落，简洁专业。数据不足时注明"待完善"。`;
+}
+async function runAI(){
+    if(!aiKey)return;
+    const btn=$('btnAnalyze'),out=$('aiOut'),hint=$('aiHint');
+    btn.disabled=true;btn.innerHTML='<span class="ai-pulse"><span class="ai-d"></span><span class="ai-d"></span><span class="ai-d"></span></span> 分析中...';
+    hint.style.display='none';out.className='ai-out show';
+    out.innerHTML='<span class="ai-pulse"><span class="ai-d"></span><span class="ai-d"></span><span class="ai-d"></span><span style="margin-left:8px;color:#888;">AI 正在分析数据，请稍候...</span></span>';
+    try{
+        const res=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+aiKey},body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content:buildPrompt()}],max_tokens:1600,temperature:.72})});
+        if(!res.ok){const e=await res.json();throw new Error(e.error?.message||'HTTP '+res.status);}
+        const data=await res.json();out.textContent=data.choices[0].message.content;
+    }catch(e){out.innerHTML=`<span style="color:#D32F2F;">❌ 分析失败：${e.message}</span><br><span style="color:#AAA;font-size:11px;">请检查 API Key 是否有效，或网络是否可访问 api.openai.com。</span>`;}
+    btn.disabled=false;btn.innerHTML='✨ 生成分析报告';
+}
+function readExcel(file,cb){
+    const r=new FileReader();
+    r.onload=ev=>{try{const wb=XLSX.read(new Uint8Array(ev.target.result),{type:'array'});const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,raw:false,defval:''});if(rows.length<2){alert('⚠️ 文件为空');return;}cb(rows);}catch(err){alert('❌ 读取失败：'+err.message);}};
+    r.readAsArrayBuffer(file);
+}
+function processData(raw,ch){
+    const headers=raw[0].map(h=>String(h).trim());const idx=buildIdx(headers);const rows=[];
+    for(let i=1;i<raw.length;i++){const c=raw[i];if(!c||!c.length)continue;const ds=(idx.date!==-1&&c[idx.date])?String(c[idx.date]).trim():'';const d=parseDate(ds);if(isNaN(d.getTime()))continue;rows.push({_d:d,_ch:ch,_r:c});}
+    return{rows,idx};
+}
+function agg(rows,idx){
+    let cost=0,imp=0,click=0,uv=0,pc=0,pa=0;
+    for(const r of rows){const c=r._r;cost+=getN(c,idx.cost);imp+=getN(c,idx.imp);click+=getN(c,idx.click);uv+=getN(c,idx.uv);pc+=getN(c,idx.paidCnt);pa+=getN(c,idx.paidAmt);}
+    return{cost,imp,click,uv,pc,pa};
+}
+function filterRows(rows,yr,mo){return rows.filter(r=>{if(yr!=='ALL'&&r._d.getFullYear()!==+yr)return false;if(mo!=='ALL'&&(r._d.getMonth()+1)!==+mo)return false;return true;});}
+function refreshYears(){
+    const ys=new Set();[ocpxProc,ppcProc].forEach(p=>{if(p)p.rows.forEach(r=>ys.add(r._d.getFullYear()));});
+    const sel=$('fYear'),cur=sel.value;sel.innerHTML='<option value="ALL">全部年份</option>';
+    Array.from(ys).sort((a,b)=>b-a).forEach(y=>sel.innerHTML+=`<option value="${y}">${y}年</option>`);
+    if(sel.querySelector(`option[value="${cur}"]`))sel.value=cur;
+}
+function refresh(){
+    const yr=$('fYear').value,mo=$('fMonth').value,gran=$('fGran').value;
+    let oRows=[],pRows=[];
+    if(ocpxProc)oRows=filterRows(ocpxProc.rows,yr,mo);
+    if(ppcProc) pRows=filterRows(ppcProc.rows,yr,mo);
+    const showO=(activeCh==='ALL'||activeCh==='OCPX'),showP=(activeCh==='ALL'||activeCh==='PPC');
+    const oA=showO&&ocpxProc?agg(oRows,ocpxProc.idx):{cost:0,imp:0,click:0,uv:0,pc:0,pa:0};
+    const pA=showP&&ppcProc ?agg(pRows,ppcProc.idx) :{cost:0,imp:0,click:0,uv:0,pc:0,pa:0};
+    const tC=oA.cost+pA.cost,tG=oA.pa+pA.pa,tI=oA.imp+pA.imp,tCl=oA.click+pA.click,tPC=oA.pc+pA.pc;
+    const has=tC>0||tG>0;
+    $('ovC').textContent=has?fC(tC):'—';$('ovG').textContent=has?fC(tG):'—';$('ovR').textContent=has?fF(safeDiv(tG,tC)):'—';
+    $('ovI').textContent=has?fN(tI):'—';$('ovCl').textContent=has?fN(tCl):'—';$('ovCTR').textContent=has?'CTR: '+fP(safeDiv(tCl,tI)):'';
+    $('ovPC').textContent=has?fN(tPC):'—';$('ovCPP').textContent=has&&tPC>0?'CPP: '+fC(safeDiv(tC,tPC)):'';
+    renderPie('cPieSpend',[{n:'OCPX',v:Math.round(oA.cost),c:'#1565C0'},{n:'PPC',v:Math.round(pA.cost),c:'#6A1B9A'}],'花费');
+    renderPie('cPieGMV', [{n:'OCPX',v:Math.round(oA.pa),  c:'#1565C0'},{n:'PPC',v:Math.round(pA.pa),  c:'#6A1B9A'}],'GMV');
+    renderTrend(showO?oRows:[],showP?pRows:[],ocpxProc?.idx||{},ppcProc?.idx||{},gran);
+    renderOvTable([{n:'OCPX',a:oA,cls:'bdg-o'},{n:'PPC',a:pA,cls:'bdg-p'}],tC,tG,tI,tCl,tPC);
+    if(ocpxProc)renderChPanel('o',oRows,ocpxProc.idx,$('oDim').value,oA.cost);
+    if(ppcProc) renderChPanel('p',pRows,ppcProc.idx,$('pDim').value,pA.cost);
+}
+function renderOvTable(chs,tC,tG,tI,tCl,tPC){
+    const tb=$('ovTbody');tb.innerHTML='';let any=false;
+    for(const{n,a,cls}of chs){if(a.cost===0&&a.pa===0)continue;any=true;const tr=document.createElement('tr');tr.innerHTML=`<td><span class="bdg ${cls}">${n}</span></td><td>${fC(a.cost)}</td><td>${fP(safeDiv(a.cost,tC))}</td><td>${fN(a.imp)}</td><td>${fN(a.click)}</td><td>${fP(safeDiv(a.click,a.imp))}</td><td>${fN(a.pc)}</td><td>${fC(a.pa)}</td><td>${fF(safeDiv(a.pa,a.cost))}</td><td>${a.pc>0?fC(safeDiv(a.cost,a.pc)):'—'}</td>`;tb.appendChild(tr);}
+    if(!any){tb.innerHTML='<tr><td colspan="10" class="no-data">请上传 OCPX 或 PPC 数据</td></tr>';return;}
+    const tot=document.createElement('tr');tot.className='tr-tot';tot.innerHTML=`<td>合 计</td><td>${fC(tC)}</td><td>100%</td><td>${fN(tI)}</td><td>${fN(tCl)}</td><td>${fP(safeDiv(tCl,tI))}</td><td>${fN(tPC)}</td><td>${fC(tG)}</td><td>${fF(safeDiv(tG,tC))}</td><td>${tPC>0?fC(safeDiv(tC,tPC)):'—'}</td>`;tb.appendChild(tot);
+}
+function renderChPanel(pre,rows,idx,dimKey,totalCost){
+    const a=agg(rows,idx);
+    $(pre+'C').textContent=a.cost>0?fC(a.cost):'—';$(pre+'G').textContent=a.pa>0?fC(a.pa):'—';
+    $(pre+'R').textContent=a.cost>0?fF(safeDiv(a.pa,a.cost)):'—';$(pre+'CTR').textContent=a.imp>0?fP(safeDiv(a.click,a.imp)):'—';
+    const colI=idx[dimKey];if(colI===undefined||colI===-1)return;
+    const grp={};
+    for(const r of rows){const k=String(r._r[colI]||'未知').trim()||'未知';if(!grp[k])grp[k]={cost:0,imp:0,click:0,uv:0,pc:0,pa:0};const g=grp[k];g.cost+=getN(r._r,idx.cost);g.imp+=getN(r._r,idx.imp);g.click+=getN(r._r,idx.click);g.uv+=getN(r._r,idx.uv);g.pc+=getN(r._r,idx.paidCnt);g.pa+=getN(r._r,idx.paidAmt);}
+    const sorted=Object.entries(grp).sort((a,b)=>b[1].cost-a[1].cost).slice(0,12);
+    const tb=$(pre+'Tbody');tb.innerHTML='';
+    for(const[name,g]of sorted){const tr=document.createElement('tr');const dn=name.length>18?name.slice(0,18)+'…':name;tr.innerHTML=`<td title="${name}">${dn}</td><td>${fC(g.cost)}</td><td>${fP(safeDiv(g.cost,totalCost))}</td><td>${fC(g.pa)}</td><td>${fF(safeDiv(g.pa,g.cost))}</td><td>${fN(g.click)}</td><td>${fP(safeDiv(g.click,g.imp))}</td><td>${g.pc>0?fC(safeDiv(g.cost,g.pc)):'—'}</td>`;tb.appendChild(tr);}
+    if(!sorted.length)tb.innerHTML='<tr><td colspan="8" class="no-data">暂无数据</td></tr>';
+    renderBar(pre==='o'?'cOBar':'cPBar',sorted.slice(0,10),pre==='o'?'#1565C0':'#6A1B9A');
+}
+function initC(id){const el=$(id);if(!el)return null;const e=echarts.getInstanceByDom(el);if(e)e.dispose();return echarts.init(el);}
+function renderPie(id,data,label){
+    const el=$(id);if(!el)return;const total=data.reduce((s,d)=>s+d.v,0);
+    if(!total){el.innerHTML='<div class="no-data" style="padding-top:55px;">暂无数据</div>';return;}
+    const c=initC(id);if(!c)return;
+    c.setOption({tooltip:{trigger:'item',formatter:p=>`${p.name}<br/>${label}: ¥${p.value.toLocaleString()}<br/>占比: ${p.percent}%`},legend:{orient:'horizontal',bottom:0,textStyle:{fontSize:10}},series:[{type:'pie',radius:['44%','70%'],center:['50%','44%'],label:{show:true,formatter:'{b}\n{d}%',fontSize:10},data:data.map(d=>({name:d.n,value:d.v,itemStyle:{color:d.c}}))}]});
+}
+function renderTrend(oRows,pRows,oIdx,pIdx,gran){
+    const c=initC('cTrend');if(!c)return;
+    function key(d){if(gran==='year')return d.getFullYear()+'';if(gran==='month')return d.getFullYear()+'/'+(d.getMonth()+1);return(d.getMonth()+1)+'/'+d.getDate();}
+    const map={};
+    const addR=(rows,idx,ch)=>{for(const r of rows){const k=key(r._d);if(!map[k])map[k]={ts:r._d.getTime(),oC:0,pC:0,oG:0,pG:0};map[k][ch==='o'?'oC':'pC']+=getN(r._r,idx.cost);map[k][ch==='o'?'oG':'pG']+=getN(r._r,idx.paidAmt);}};
+    addR(oRows,oIdx,'o');addR(pRows,pIdx,'p');
+    const sk=Object.keys(map).sort((a,b)=>map[a].ts-map[b].ts);
+    if(!sk.length){c.setOption({title:{text:'暂无数据',left:'center',top:'center',textStyle:{color:'#CCC',fontSize:13}}});return;}
+    c.setOption({tooltip:{trigger:'axis',axisPointer:{type:'shadow'},formatter:ps=>{let s=ps[0].name+'<br/>';ps.forEach(p=>s+=p.marker+p.seriesName+': ¥'+Number(p.value).toLocaleString()+'<br/>');return s;}},legend:{data:['OCPX花费','PPC花费','总GMV'],bottom:0,textStyle:{fontSize:10}},grid:{left:'2%',right:'3%',bottom:'18%',top:'8%',containLabel:true},xAxis:{type:'category',data:sk,axisLabel:{color:'#888',fontSize:10,rotate:sk.length>20?40:0}},yAxis:[{type:'value',axisLabel:{color:'#999',fontSize:10,formatter:v=>'¥'+v.toLocaleString()},splitLine:{lineStyle:{type:'dashed',color:'#F0F0F0'}}},{type:'value',axisLabel:{color:'#B8962E',fontSize:10,formatter:v=>'¥'+v.toLocaleString()},splitLine:{show:false}}],series:[{name:'OCPX花费',type:'bar',stack:'c',data:sk.map(k=>Math.round(map[k].oC)),itemStyle:{color:'#1565C0'},barMaxWidth:28},{name:'PPC花费',type:'bar',stack:'c',data:sk.map(k=>Math.round(map[k].pC)),itemStyle:{color:'#6A1B9A'},barMaxWidth:28},{name:'总GMV',type:'line',data:sk.map(k=>Math.round(map[k].oG+map[k].pG)),yAxisIndex:1,itemStyle:{color:'#B8962E'},lineStyle:{width:2.5},smooth:true}]});
+}
+function renderBar(id,data,color){
+    const c=initC(id);if(!c)return;
+    if(!data.length){c.setOption({title:{text:'暂无数据',left:'center',top:'center',textStyle:{color:'#CCC',fontSize:12}}});return;}
+    c.setOption({tooltip:{trigger:'axis',formatter:p=>p[0].name+'<br/>花费: ¥'+Number(p[0].value).toLocaleString()},grid:{left:'1%',right:'15%',top:'4%',bottom:'4%',containLabel:true},xAxis:{type:'value',axisLabel:{show:false},splitLine:{show:false}},yAxis:{type:'category',data:data.map(d=>d[0].length>14?d[0].slice(0,14)+'…':d[0]),axisLabel:{color:'#555',fontSize:10},inverse:true},series:[{type:'bar',data:data.map(d=>Math.round(d[1].cost)),itemStyle:{color,borderRadius:[0,3,3,0]},barMaxWidth:14,label:{show:true,position:'right',formatter:p=>'¥'+p.value.toLocaleString(),fontSize:10,color:'#666'}}]});
+}
+document.addEventListener('DOMContentLoaded',()=>{
+    checkSession();
+    $('lBtn').addEventListener('click',doLogin);
+    $('lPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+    $('lUser').addEventListener('keydown',e=>{if(e.key==='Enter')$('lPass').focus();});
+    $('btnLogout').addEventListener('click',()=>{sessionStorage.clear();location.reload();});
+    $('btnAISetting').addEventListener('click',()=>{$('aiKeyInp').value=aiKey;$('aiModal').classList.add('show');});
+    $('aiMCancel').addEventListener('click',()=>$('aiModal').classList.remove('show'));
+    $('aiMSave').addEventListener('click',()=>{const k=$('aiKeyInp').value.trim();if(k){aiKey=k;sessionStorage.setItem('bvl_k',k);setAiStatus(true);}$('aiModal').classList.remove('show');});
+    $('aiModal').addEventListener('click',e=>{if(e.target===$('aiModal'))$('aiModal').classList.remove('show');});
+    $('btnAnalyze').addEventListener('click',runAI);
+    $('aiHdr').addEventListener('click',function(e){
+        if(e.target.closest('#btnAnalyze'))return;
+        aiCollapsed=!aiCollapsed;$('aiBody').style.display=aiCollapsed?'none':'block';$('aiArrow').style.transform=aiCollapsed?'rotate(-90deg)':'rotate(0deg)';
+    });
+    ['fYear','fMonth','fGran'].forEach(id=>$(id).addEventListener('change',refresh));
+    document.querySelectorAll('.ch-btn').forEach(btn=>{btn.addEventListener('click',function(){activeCh=this.dataset.ch;document.querySelectorAll('.ch-btn').forEach(b=>{b.className='ch-btn';if(b===this){const ch=b.dataset.ch;if(ch==='ALL')b.classList.add('a-all');else if(ch==='OCPX')b.classList.add('a-ocpx');else b.classList.add('a-ppc');}});refresh();});});
+    $('ocpxFile').addEventListener('change',function(e){const f=e.target.files[0];if(!f)return;readExcel(f,rows=>{ocpxProc=processData(rows,'OCPX');$('oDot').className='dot dot-blue';$('oSt').textContent=`✅ 已加载 ${ocpxProc.rows.length} 条 | ${f.name}`;$('oSt').style.color='#1565C0';refreshYears();refresh();});});
+    $('ppcFile').addEventListener('change',function(e){const f=e.target.files[0];if(!f)return;readExcel(f,rows=>{ppcProc=processData(rows,'PPC');$('pDot').className='dot dot-purple';$('pSt').textContent=`✅ 已加载 ${ppcProc.rows.length} 条 | ${f.name}`;$('pSt').style.color='#6A1B9A';refreshYears();refresh();});});
+    $('oDim').addEventListener('change',()=>{if(ocpxProc){const r=filterRows(ocpxProc.rows,$('fYear').value,$('fMonth').value);renderChPanel('o',r,ocpxProc.idx,$('oDim').value,agg(r,ocpxProc.idx).cost);}});
+    $('pDim').addEventListener('change',()=>{if(ppcProc){const r=filterRows(ppcProc.rows,$('fYear').value,$('fMonth').value);renderChPanel('p',r,ppcProc.idx,$('pDim').value,agg(r,ppcProc.idx).cost);}});
+    window.addEventListener('resize',()=>['cPieSpend','cPieGMV','cTrend','cOBar','cPBar'].forEach(id=>{const el=$(id);if(!el)return;const inst=echarts.getInstanceByDom(el);if(inst)inst.resize();}));
+});
+</script>
+
+</body></html>
